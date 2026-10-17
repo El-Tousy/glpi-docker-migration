@@ -1,12 +1,12 @@
 <div align="center">
 
-# GLPI 10 → GLPI 11 Docker Migration
+# GLPI 10 → GLPI 11 Docker-Migration
 
-**A Dockerized GLPI 11 installation and the migration of an existing GLPI 10 database — entirely on Windows, with Docker Desktop and no Linux VM.**
+**Eine Docker-basierte GLPI-11-Installation und die Migration einer bestehenden GLPI-10-Datenbank — vollständig unter Windows mit Docker Desktop und ohne Linux-VM.**
 
-Technical Internship Project · 2026
+Projekt aus dem technischen Praktikum · 2026
 
-[**📸 Screenshots**](#screenshots) · [**🏗️ Architecture**](#architecture) · [**🇩🇪 Deutsch**](README.de.md)
+[**📸 Screenshots**](#screenshots) · [**🏗️ Architektur**](#architektur) · [**🇬🇧 English**](README.en.md)
 
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
 [![MariaDB](https://img.shields.io/badge/MariaDB_10.6-003545?style=flat&logo=mariadb&logoColor=white)](https://mariadb.org/)
@@ -17,30 +17,30 @@ Technical Internship Project · 2026
 
 </div>
 
-> **Confidentiality note.** For confidentiality reasons, no real company data (database dumps, screenshots showing real records) is included in this repository. Only the technical setup and the migration methodology are documented.
+> **Hinweis zur Vertraulichkeit.** Aus Gründen der Vertraulichkeit enthält dieses Repository keine echten Unternehmensdaten (Datenbank-Dumps, Screenshots mit echten Datensätzen). Dokumentiert werden ausschließlich der technische Aufbau und die Migrationsmethodik.
 
 ---
 
-## Table of Contents
+## Inhaltsverzeichnis
 
-- [Overview](#overview)
+- [Überblick](#überblick)
 - [Screenshots](#screenshots)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Migration Process](#migration-process)
-- [Author](#author)
-- [License](#license)
+- [Funktionen](#funktionen)
+- [Architektur](#architektur)
+- [Tech-Stack](#tech-stack)
+- [Projektstruktur](#projektstruktur)
+- [Erste Schritte](#erste-schritte)
+- [Migrationsablauf](#migrationsablauf)
+- [Autor](#autor)
+- [Lizenz](#lizenz)
 
 ---
 
-## Overview
+## Überblick
 
-This project was carried out during a technical internship. The company was already running **GLPI 10** for IT asset and service management. The goal was to deploy a new **GLPI 11** environment with **Docker**, then migrate the existing database from version 10 to version 11 — entirely on Windows, using Docker Desktop and PowerShell / CMD, without any Linux virtual machine.
+Dieses Projekt wurde während eines technischen Praktikums durchgeführt. Das Unternehmen setzte bereits **GLPI 10** für die Verwaltung von IT-Assets und Services ein. Ziel war es, mit **Docker** eine neue **GLPI-11**-Umgebung bereitzustellen und anschließend die bestehende Datenbank von Version 10 auf Version 11 zu migrieren — vollständig unter Windows, mit Docker Desktop und PowerShell / CMD, ohne virtuelle Linux-Maschine.
 
-The work took about one month, covering the setup, the migration itself and the troubleshooting that came with it.
+Die Arbeit dauerte etwa einen Monat und umfasste die Einrichtung, die Migration selbst und die dabei anfallende Fehlersuche.
 
 ---
 
@@ -54,27 +54,27 @@ The work took about one month, covering the setup, the migration itself and the 
   </tr>
 </table>
 
-👉 [View all screenshots](./screenshots)
+👉 [Alle Screenshots ansehen](./screenshots)
 
 ---
 
-## Features
+## Funktionen
 
-### Infrastructure
+### Infrastruktur
 
-- **Fully Dockerized** — three isolated, orchestrated containers
-- **Persistent storage** — named volumes for both the database and the GLPI files
-- **Web-based database management** — phpMyAdmin included for inspection and troubleshooting
+- **Vollständig mit Docker betrieben** — drei isolierte, orchestrierte Container
+- **Persistente Speicherung** — benannte Volumes sowohl für die Datenbank als auch für die GLPI-Dateien
+- **Webbasierte Datenbankverwaltung** — phpMyAdmin für Inspektion und Fehlersuche enthalten
 
 ### Migration
 
-- **Version-to-version upgrade** — a GLPI 10.0.7 database migrated into a fresh GLPI 11 schema
-- **Automated update detection** — GLPI's built-in upgrade wizard is triggered on first access
-- **Manual schema fixes** — SQL adjustments applied where the automatic migration was incomplete
+- **Upgrade von Version zu Version** — eine GLPI-10.0.7-Datenbank wurde in ein frisches GLPI-11-Schema migriert
+- **Automatische Update-Erkennung** — der integrierte Upgrade-Assistent von GLPI startet beim ersten Zugriff
+- **Manuelle Schema-Korrekturen** — SQL-Anpassungen dort, wo die automatische Migration unvollständig war
 
 ---
 
-## Architecture
+## Architektur
 
 ```mermaid
 flowchart LR
@@ -82,34 +82,34 @@ flowchart LR
     U -->|http://localhost:8081| P[phpMyAdmin]
     G --> D[(MariaDB 10.6)]
     P --> D
-    D --- V1[(Named volume<br/>database)]
-    G --- V2[(Named volume<br/>GLPI files)]
+    D --- V1[(Benanntes Volume<br/>Datenbank)]
+    G --- V2[(Benanntes Volume<br/>GLPI-Dateien)]
 ```
 
-Three containers are orchestrated with Docker Compose: the GLPI application, the MariaDB database and phpMyAdmin. The database and the GLPI files live in named volumes, so they survive container restarts and re-creation.
+Drei Container werden mit Docker Compose orchestriert: die GLPI-Anwendung, die MariaDB-Datenbank und phpMyAdmin. Die Datenbank und die GLPI-Dateien liegen in benannten Volumes und bleiben daher bei Neustarts und beim Neuerstellen der Container erhalten.
 
 ---
 
-## Tech Stack
+## Tech-Stack
 
-| Technology | Usage |
+| Technologie | Verwendung |
 |---|---|
-| Docker Desktop | Container runtime on Windows |
-| Docker Compose | Multi-container configuration |
-| MariaDB 10.6 | Database engine |
-| GLPI (`diouxx/glpi` image) | ITSM application |
-| phpMyAdmin | Database administration |
-| PowerShell / CMD | Command execution and migration commands |
+| Docker Desktop | Container-Laufzeitumgebung unter Windows |
+| Docker Compose | Konfiguration mehrerer Container |
+| MariaDB 10.6 | Datenbank-Engine |
+| GLPI (Image `diouxx/glpi`) | ITSM-Anwendung |
+| phpMyAdmin | Datenbankverwaltung |
+| PowerShell / CMD | Ausführung von Befehlen und Migrationsbefehlen |
 
 ---
 
-## Project Structure
+## Projektstruktur
 
 ```
 glpi-docker-migration/
 │
-├── docker-compose.yml     # GLPI, MariaDB and phpMyAdmin services
-├── screenshots/           # Screenshots of the migrated instance
+├── docker-compose.yml     # Dienste für GLPI, MariaDB und phpMyAdmin
+├── screenshots/           # Screenshots der migrierten Instanz
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -117,74 +117,74 @@ glpi-docker-migration/
 
 ---
 
-## Getting Started
+## Erste Schritte
 
-### Prerequisites
+### Voraussetzungen
 
 - Docker Desktop (Windows)
-- Basic familiarity with PowerShell / CMD
+- Grundkenntnisse in PowerShell / CMD
 
 ### Installation
 
-1. Clone the repository:
+1. Repository klonen:
 
    ```bash
    git clone https://github.com/El-Tousy/glpi-docker-migration.git
    cd glpi-docker-migration
    ```
 
-2. Start the containers:
+2. Container starten:
 
    ```powershell
    docker compose up -d
    ```
 
-3. Open the services:
+3. Dienste öffnen:
    - GLPI: [http://localhost:8080](http://localhost:8080)
    - phpMyAdmin: [http://localhost:8081](http://localhost:8081)
 
 ---
 
-## Migration Process
+## Migrationsablauf
 
 ```mermaid
 flowchart LR
-    A[1. Deploy GLPI 11<br/>empty schema] --> B[2. Import the<br/>GLPI 10 database]
-    B --> C[3. Trigger the<br/>schema update]
-    C --> D[4. Apply manual<br/>SQL fixes]
-    D --> E[5. Verify the<br/>migration]
+    A[1. GLPI 11 bereitstellen<br/>leeres Schema] --> B[2. GLPI-10-Datenbank<br/>importieren]
+    B --> C[3. Schema-Update<br/>auslösen]
+    C --> D[4. Manuelle<br/>SQL-Korrekturen]
+    D --> E[5. Migration<br/>überprüfen]
 ```
 
-1. **Deploy the new stack.** Start GLPI 11 from scratch so that the empty schema is created.
-2. **Import the GLPI 10 database** into the new database container (the dump is not included in this repository):
+1. **Neuen Stack bereitstellen.** GLPI 11 frisch starten, damit das leere Schema angelegt wird.
+2. **GLPI-10-Datenbank importieren** in den neuen Datenbank-Container (der Dump ist nicht Teil dieses Repositorys):
 
    ```powershell
    docker exec -i glpi-db mysql -u glpi -p glpi < glpi_backup_10.0.7.sql
    ```
 
-3. **Trigger the schema update.** Opening GLPI in the browser detects the version mismatch and starts the upgrade process automatically.
-4. **Apply manual SQL fixes.** Some schema differences between GLPI 10 and 11 required manual adjustments, done from CMD.
-5. **Verify the migration.** The database structure was checked in phpMyAdmin and the functionality was validated through the GLPI dashboard.
+3. **Schema-Update auslösen.** Beim Öffnen von GLPI im Browser wird die Versionsabweichung erkannt und der Upgrade-Prozess automatisch gestartet.
+4. **Manuelle SQL-Korrekturen anwenden.** Einige Schemaunterschiede zwischen GLPI 10 und 11 erforderten manuelle Anpassungen, die über CMD vorgenommen wurden.
+5. **Migration überprüfen.** Die Datenbankstruktur wurde in phpMyAdmin geprüft und die Funktionalität über das GLPI-Dashboard validiert.
 
 ---
 
-## Author
+## Autor
 
-**El-Tousy** — Computer Science student, Morocco
+**El-Tousy** — Informatikstudentin, Marokko
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/El-Tousy)
 [![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:leilaeltousy@gmail.com)
 
 ---
 
-## License
+## Lizenz
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+Veröffentlicht unter der MIT-Lizenz. Siehe [LICENSE](LICENSE) für Details.
 
 ---
 
 <div align="center">
 
-⭐ If you find this project useful, consider leaving a star.
+⭐ Wenn dir dieses Projekt nützlich erscheint, hinterlasse gerne einen Stern.
 
 </div>
